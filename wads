@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Display help
+usage() {
+  cat << EOF
+  USAGE:
+
+    wads: dotfile repo manager
+
+     wads [ -n ] add
+
+     wads -n         : send notification
+
+     wads add .vimrc    : add .vimrc to dotfiles repo
+     wads rm vimrc      : remove vimrc from dotfiles repo
+     wads install vimrc : symlink vimrc from dotfiles repo to home dir
+
+  OPTIONS:
+
+     -n : send notification to commit dotfiles
+
+  COMMANDS:
+
+     add     : add file to dotfiles repo
+     rm      : remove file from dotfiles repo
+     install : symlink file from dotfiles repo to home dir
+EOF
+}
+
+notify() {
+  cd ~/Dotfiles
+
+  gitstatus=$(git status | ag 'nothing to commit, working directory clean')
+
+  if [[ -z $gitstatus ]]; then
+    exec /home/andy/bin/notify-all -u critical 'Commit your dots'
+  fi
+  exit 0
+}
+
+dotify() {
+  if [[ $1 == .* ]]; then
+    echo $(echo $1 | sed s/\\.//)
+  else
+    echo '.'$1
+  fi
+}
+
+sub_add() {
+  source_file="$1"
+  source_path=~/"$source_file"
+  mv_path=~/Dotfiles/$(dotify $source_file)
+
+  rm -rf $mv_path
+  mv $source_path $mv_path
+  ln -s $mv_path $source_path
+  exit 0
+}
+
+sub_rm() {
+  source_file="$1"
+  source_path=~/Dotfiles/"$source_file"
+  mv_path=~/$(dotify $source_file)
+
+  rm -rf $mv_path
+  mv $source_path $mv_path
+  exit 0
+}
+
+sub_install() {
+  source_file="$1"
+  mv_path=~/"$source_file"
+  source_path=~/Dotfiles/$(dotify $source_file)
+
+  ln -s $source_path $mv_path
+  exit 0
+}
+
+# Set flag options
+while getopts "nh" opt; do
+  case "$opt" in
+    n) notify && exit 0;;
+    h) usage && exit 0;;
+    *) error "Invalid flag.";;
+  esac
+done 2>/dev/null
+shift "$((OPTIND-1))"
+
+command=$1
+case $command in
+  *)
+    shift
+    sub_${command} $@
+    if [ $? = 127 ]; then
+      echo "Error: '$command' is not a known command." >&2
+      echo "       Run '$ProgName --help' for a list of known commands." >&2
+      exit 1
+    fi
+    ;;
+esac
+
+usage && exit 0
