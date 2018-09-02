@@ -1,1 +1,1 @@
-DOTFILES_REPO=$( cd test/Dotfiles; pwd -P )
+BATS_TMPDIR=$(pwd)/test/tmp
