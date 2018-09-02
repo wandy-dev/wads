@@ -29,7 +29,7 @@ wads='./wads'
     touch $DOTFILES_REPO/testrc
     run $wads install testrc
     assert_success
-    assert [ -e $HOME/.testrc ]
+    assert [ -L $HOME/.testrc ]
     rm -rf $HOME/.testrc
     rm -rf $DOTFILES_REPO/testrc
 }
