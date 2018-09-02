@@ -39,7 +39,6 @@ EOF
 
 notify() {
   cd $DOTFILES_REPO
-  echo $DOTFILES_REPO
   gitstatus=$(git status | ag 'nothing to commit, working directory clean')
 
   if [[ -z $gitstatus ]]; then
@@ -60,7 +59,6 @@ sub_add() {
   source_file="$1"
   source_path=$HOME/"$source_file"
   mv_path=$DOTFILES_REPO/$(dotify $source_file)
-  echo $mv_path
 
   rm -rf $mv_path
   mv $source_path $mv_path
