@@ -1,10 +1,10 @@
 #!./test/libs/bats/bin/bats
 
-DOTFILES_REPO=~/Dotfiles
+DOTFILES_REPO=$(pwd)/test/Dotfiles
 
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
-
+load 'test_helper'
 
 wads='./wads'
 
@@ -12,7 +12,9 @@ wads='./wads'
     touch ~/.testrc
     run $wads add .testrc
     assert_success
-    assert [ -f $DOTFILES_REPO/testrc ]
+    assert [ -e $DOTFILES_REPO/testrc ]
+    rm -rf ~/.testrc
+    rm -rf $DOTFILES_REPO/testrc
 }
 
 @test "Should remove file from dotfiles repo" {

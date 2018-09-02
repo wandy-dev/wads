@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# File configuration
+CFG_FILE="${CFG_FILE:-$HOME/.wadrc}"
+
+# Check for configuration file and source it
+if [[ -e "$CFG_FILE" ]]; then
+  source "$CFG_FILE"
+else
+  DOTFILES_REPO=$(pwd)/test/Dotfiles
+fi
+
 # Display help
 usage() {
   cat << EOF
@@ -28,8 +38,8 @@ EOF
 }
 
 notify() {
-  cd ~/Dotfiles
-
+  cd $DOTFILES_REPO
+  echo $DOTFILES_REPO
   gitstatus=$(git status | ag 'nothing to commit, working directory clean')
 
   if [[ -z $gitstatus ]]; then
@@ -49,7 +59,8 @@ dotify() {
 sub_add() {
   source_file="$1"
   source_path=~/"$source_file"
-  mv_path=~/Dotfiles/$(dotify $source_file)
+  mv_path=$DOTFILES_REPO/$(dotify $source_file)
+  echo $mv_path
 
   rm -rf $mv_path
   mv $source_path $mv_path
@@ -59,7 +70,7 @@ sub_add() {
 
 sub_rm() {
   source_file="$1"
-  source_path=~/Dotfiles/"$source_file"
+  source_path=$DOTFILES_REPO/"$source_file"
   mv_path=~/$(dotify $source_file)
 
   rm -rf $mv_path
@@ -70,7 +81,7 @@ sub_rm() {
 sub_install() {
   source_file="$1"
   mv_path=~/$(dotify $source_file)
-  source_path=~/Dotfiles/"$source_file"
+  source_path=$DOTFILES_REPO"$source_file"
 
   ln -s $source_path $mv_path
   exit 0
@@ -81,6 +92,7 @@ while getopts "nh" opt; do
   case "$opt" in
     n) notify && exit 0;;
     h) usage && exit 0;;
+    h) config && exit 0;;
     *) error "Invalid flag.";;
   esac
 done 2>/dev/null
