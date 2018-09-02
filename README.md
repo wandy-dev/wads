@@ -1,5 +1,7 @@
 # Wandy's auto dotfile synchronizer
 
+[![Build Status](https://travis-ci.org/wandy-dev/wads.svg?branch=master)](https://travis-ci.org/wandy-dev/wads)
+
 ## wads
 
   USAGE:
