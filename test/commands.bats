@@ -1,6 +1,6 @@
 #!./test/libs/bats/bin/bats
 
-DOTFILES_REPO=$(pwd)/test/Dotfiles
+DOTFILES_REPO=~/Dotfiles
 
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'

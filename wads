@@ -7,7 +7,7 @@ CFG_FILE="${CFG_FILE:-$HOME/.wadrc}"
 if [[ -e "$CFG_FILE" ]]; then
   source "$CFG_FILE"
 else
-  DOTFILES_REPO=$(pwd)/test/Dotfiles
+  DOTFILES_REPO=~/Dotfiles
 fi
 
 # Display help
