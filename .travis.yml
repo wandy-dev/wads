@@ -2,3 +2,6 @@ language: bash
 
 script:
       - ./test.sh
+env:
+  global:
+    - TMPDIR=/tmp
