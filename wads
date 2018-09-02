@@ -69,8 +69,8 @@ sub_rm() {
 
 sub_install() {
   source_file="$1"
-  mv_path=~/"$source_file"
-  source_path=~/Dotfiles/$(dotify $source_file)
+  mv_path=~/$(dotify $source_file)
+  source_path=~/Dotfiles/"$source_file"
 
   ln -s $source_path $mv_path
   exit 0
