@@ -20,7 +20,7 @@ wads='./wads'
 @test "Should remove file from dotfiles repo" {
     run $wads rm testrc
     assert_success
-    assert [ ! -f $DOTFILES_REPO/testrc ]
+    assert [ ! -e $DOTFILES_REPO/testrc ]
     rm -rf $HOME/.testrc
     rm -rf $DOTFILES_REPO/testrc
 }
@@ -29,7 +29,7 @@ wads='./wads'
     touch $DOTFILES_REPO/testrc
     run $wads install testrc
     assert_success
-    assert [ -f $HOME/.testrc ]
+    assert [ -e $HOME/.testrc ]
     rm -rf $HOME/.testrc
     rm -rf $DOTFILES_REPO/testrc
 }
