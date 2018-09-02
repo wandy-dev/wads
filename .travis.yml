@@ -1,7 +1,9 @@
 language: bash
 
+install:
+  - mkdir $HOME/Dotfiles
 script:
-      - ./test.sh
+  - ./test.sh
 env:
   global:
     - TMPDIR=/tmp
