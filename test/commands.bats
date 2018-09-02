@@ -1,6 +1,6 @@
 #!./test/libs/bats/bin/bats
 
-DOTFILES_REPO=~/Dotfiles
+DOTFILES_REPO=$HOME/Dotfiles
 
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
@@ -9,11 +9,11 @@ load 'test_helper'
 wads='./wads'
 
 @test "Should symlink file from home directory to ~/Dotfiles" {
-    touch ~/.testrc
+    touch $HOME/.testrc
     run $wads add .testrc
     assert_success
     assert [ -e $DOTFILES_REPO/testrc ]
-    rm -rf ~/.testrc
+    rm -rf $HOME/.testrc
     rm -rf $DOTFILES_REPO/testrc
 }
 
@@ -21,7 +21,7 @@ wads='./wads'
     run $wads rm testrc
     assert_success
     assert [ ! -f $DOTFILES_REPO/testrc ]
-    rm -rf ~/.testrc
+    rm -rf $HOME/.testrc
     rm -rf $DOTFILES_REPO/testrc
 }
 
@@ -29,7 +29,7 @@ wads='./wads'
     touch $DOTFILES_REPO/testrc
     run $wads install testrc
     assert_success
-    assert [ -f ~/.testrc ]
-    rm -rf ~/.testrc
+    assert [ -f $HOME/.testrc ]
+    rm -rf $HOME/.testrc
     rm -rf $DOTFILES_REPO/testrc
 }

@@ -43,7 +43,7 @@ notify() {
   gitstatus=$(git status | ag 'nothing to commit, working directory clean')
 
   if [[ -z $gitstatus ]]; then
-    exec /home/andy/bin/notify-all -u critical 'Commit your dots'
+    exec /home/$user/bin/notify-all -u critical 'Commit your dots'
   fi
   exit 0
 }
@@ -58,7 +58,7 @@ dotify() {
 
 sub_add() {
   source_file="$1"
-  source_path=~/"$source_file"
+  source_path=$HOME/"$source_file"
   mv_path=$DOTFILES_REPO/$(dotify $source_file)
   echo $mv_path
 
@@ -71,7 +71,7 @@ sub_add() {
 sub_rm() {
   source_file="$1"
   source_path=$DOTFILES_REPO/"$source_file"
-  mv_path=~/$(dotify $source_file)
+  mv_path=$HOME/$(dotify $source_file)
 
   rm -rf $mv_path
   mv $source_path $mv_path
@@ -80,7 +80,7 @@ sub_rm() {
 
 sub_install() {
   source_file="$1"
-  mv_path=~/$(dotify $source_file)
+  mv_path=$HOME/$(dotify $source_file)
   source_path=$DOTFILES_REPO"$source_file"
 
   ln -s $source_path $mv_path
