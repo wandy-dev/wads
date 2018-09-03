@@ -19,8 +19,7 @@ usage() {
 
      wads [ -n ] add
 
-     wads -n         : send notification
-
+     wads -n            : send notification
      wads add .vimrc    : add .vimrc to dotfiles repo
      wads rm vimrc      : remove vimrc from dotfiles repo
      wads install vimrc : symlink vimrc from dotfiles repo to home dir
@@ -85,12 +84,17 @@ sub_install() {
   exit 0
 }
 
+error() {
+  echo -e "\033[0;31m$1\033[0m" >&2
+  echo
+  usage
+}
+
 # Set flag options
 while getopts "nh" opt; do
   case "$opt" in
     n) notify && exit 0;;
     h) usage && exit 0;;
-    h) config && exit 0;;
     *) error "Invalid flag.";;
   esac
 done 2>/dev/null
@@ -100,10 +104,9 @@ command=$1
 case $command in
   *)
     shift
-    sub_${command} $@
+    sub_${command} $@ > /dev/null 2>&1
     if [ $? = 127 ]; then
-      echo "Error: '$command' is not a known command." >&2
-      echo "       Run '$ProgName --help' for a list of known commands." >&2
+      error "Error: '$command' is not a known command."
       exit 1
     fi
     ;;
