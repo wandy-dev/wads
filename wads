@@ -104,12 +104,15 @@ command=$1
 case $command in
   *)
     shift
-    sub_${command} $@ > /dev/null 2>&1
-    if [ $? = 127 ]; then
-      error "Error: '$command' is not a known command."
-      exit 1
-    fi
-    ;;
+    for arg in "$@"; do
+      sub_${command} $1 > /dev/null 2>&1
+      if [ $? = 127 ]; then
+        error "Error: '$command' is not a known command."
+        exit 1
+      fi
+      shift
+    done
+  ;;
 esac
 
 usage && exit 0

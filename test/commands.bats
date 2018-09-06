@@ -33,3 +33,37 @@ wads='./wads'
     rm -rf $HOME/.testrc
     rm -rf $DOTFILES_REPO/testrc
 }
+
+@test "subcommands should work with multiple files" {
+    touch $HOME/.testrc
+    touch $HOME/.testrc1
+    run $wads add .testrc
+    run $wads add .testrc1
+    assert_success
+    assert [ -e $DOTFILES_REPO/testrc ]
+    assert [ -e $DOTFILES_REPO/testrc1 ]
+
+    run $wads rm testrc
+    run $wads rm testrc1
+    assert_success
+    assert [ ! -e $DOTFILES_REPO/testrc ]
+    assert [ ! -e $DOTFILES_REPO/testrc1 ]
+
+    rm -rf $HOME/.testrc
+    rm -rf $DOTFILES_REPO/testrc
+    rm -rf $HOME/.testrc1
+    rm -rf $DOTFILES_REPO/testrc1
+
+    touch $DOTFILES_REPO/testrc
+    touch $DOTFILES_REPO/testrc1
+    run $wads install testrc
+    run $wads install testrc1
+    assert_success
+    assert [ -L $HOME/.testrc ]
+    assert [ -L $HOME/.testrc1 ]
+
+    rm -rf $HOME/.testrc
+    rm -rf $DOTFILES_REPO/testrc
+    rm -rf $HOME/.testrc1
+    rm -rf $DOTFILES_REPO/testrc1
+}
